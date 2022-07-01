@@ -1,0 +1,8 @@
+nodes:
+    - address: 203.250.34.144
+      user: rancher
+      role:
+        - controlplane
+        - etcd
+        - worker
+
