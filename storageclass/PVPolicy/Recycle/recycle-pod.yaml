@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: recycle-pod
+  labels:
+    name: recycle
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ['sh', '-c', 'echo "The local volume(recycle) is again mounted!" > /mnt/test2.txt && sleep 3600']
+    volumeMounts:
+      - name: local-persistent-storage
+        mountPath: /mnt
+  volumes:
+    - name: local-persistent-storage
+      persistentVolumeClaim:
+        claimName: recycle-pvc

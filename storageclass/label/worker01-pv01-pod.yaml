@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: worker01-pv01-pod
+  labels:
+    name: worker01-pv01-pod
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ['sh', '-c', 'echo "The local volume(worker01-pv01) is again mounted!" > /mnt/test2.txt && sleep 3600']
+    volumeMounts:
+      - name: local-persistent-storage
+        mountPath: /mnt
+  volumes:
+    - name: local-persistent-storage
+      persistentVolumeClaim:
+        claimName: worker01-pvc01
