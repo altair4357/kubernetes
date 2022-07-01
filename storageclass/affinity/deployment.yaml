@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iksoon-deployment-test
+  labels:
+    app: iksoon-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iksoon-pod
+  template:
+    metadata:
+      labels:
+        app: iksoon-pod
+    spec:
+      containers:
+      - name: iksoon-tomcat
+        image: peksoon/iksoon_tomcat:1.0.6
+        ports:
+        - containerPort: 8080
+      affinity:         # affinity 사용
+        nodeAffinity:   # 종류는 Node Affinity로 설정
+ 
+          # Label이 매칭 되는 Worker Node 에만 Pod 배포 가능.
+          requiredDuringSchedulingIgnoredDuringExecution:  # Required Node Affinity로 설정
+            nodeSelectorTerms: 
+            - matchExpressions:   # 특정 Worker Node에 설정되어있는 Label과 
+                                  # 해당 설정의 Label이 매칭되는 Worker Node에 Pod를 생성
+                                  # Label set-based selector 문법 사용
+              - key: requiredkey
+                values: iksoonvalue
+                operator: In # in, Exists, Gt, Lt, NotIn, DoesNotExist, 설정이 올 수 있음
+ 
+          # 우선순위가 더 높은 Worker Node Two에 Pod가 배포되는지 확인.
+          preferredDuringSchedulingIgnoredDuringExecution:  # Preferred Node Affinity로 설정
+          - weight: 10
+             preference:
+               matchExpressions:   
+               - key: preferredkey1
+                 values: iksoonvalue1
+                 operator: In
+ 
+           preferredDuringSchedulingIgnoredDuringExecution: 
+           - weight: 20
+             preference:
+               matchExpressions:   
+               - key: preferredkey2
+                 values: iksoonvalue2
+                 operator: In

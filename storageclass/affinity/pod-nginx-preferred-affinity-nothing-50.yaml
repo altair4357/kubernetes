@@ -1,0 +1,45 @@
+# pod-nginx-required-affinity.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx2
+spec:
+  # affinity
+  affinity:
+    nodeAffinity:
+      # preferred
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 10
+        preference:
+          matchExpressions:
+          - key: disktype
+            operator: In
+            values:
+            - nothing
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+# pod-nginx-required-affinity.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx2
+spec:
+  # affinity
+  affinity:
+    nodeAffinity:
+      # preferred
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 50
+        preference:
+          matchExpressions:
+          - key: disktype
+            operator: In
+            values:
+            - nothing
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+

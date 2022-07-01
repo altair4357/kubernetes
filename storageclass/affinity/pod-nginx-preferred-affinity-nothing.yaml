@@ -1,0 +1,22 @@
+# pod-nginx-required-affinity.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx2
+spec:
+  # affinity
+  affinity:
+    nodeAffinity:
+      # preferred
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 10
+        preference:
+          matchExpressions:
+          - key: cloud_type
+            operator: In
+            values:
+            - AWS
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent

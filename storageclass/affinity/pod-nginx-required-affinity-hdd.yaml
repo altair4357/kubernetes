@@ -1,0 +1,22 @@
+# pod-nginx-required-affinity.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx2
+spec:
+  # affinity
+  affinity:
+    nodeAffinity:
+      # required
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        # disktype이 ssd인 node에 파드 생성
+        - matchExpressions:
+          - key: disktype
+            operator: In
+            values:
+            - hdd            
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
